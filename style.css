@@ -1,0 +1,66 @@
+
+body {
+    background-color: #89c2d8; /* Голубое небо */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.game {
+    width: 600px;
+    height: 200px;
+    border-bottom: 3px solid #000102; /* Земля */
+    background-image: url('img/background.png'); 
+    background-size: cover;
+    background-position: bottom;
+    position: relative;
+    overflow: hidden;
+}
+
+#dino {
+    width: 50px;
+    height: 50px;
+    background-image: url(img/dino.png) ;
+    background-size: 50px 50px;
+    position: relative;
+    top: 150px;
+}
+#cactus {
+    width: 20px;  /* Ширина кактуса */
+    height: 40px; /* Высота кактуса */
+    background-image: url(img/cactus.png); /* Устанавливаем картинку кактуса */
+    background-size: 20px 40px; /* Размер фонового изображения совпадает с размером элемента */
+    position: relative; /* Относительное позиционирование */
+    top: 110px; /* Размещаем кактус на "земле" */
+    left: 580px; /* Исходная позиция кактуса (за границей игрового поля) */
+    
+    /* Запускаем анимацию "cactusMov" */
+    animation: cactusMov 2s infinite linear; 
+}
+
+/* Анимация движения кактуса слева направо */
+@keyframes cactusMov {
+    0% { 
+        left: 580px; /* Начальная позиция кактуса (за границей экрана справа) */
+    }
+    100% { 
+        left: -20px; /* Конечная позиция (уходит за границу экрана слева) */
+    }
+}
+
+/* Анимация прыжка динозавра */
+@keyframes jump {
+    0% { top: 150px; }  /* Начальная позиция (динозавр стоит на земле) */
+    30% { top: 100px; } /* Начало подъёма */
+    50% { top: 60px; }  /* Максимальная высота прыжка */
+    80% { top: 100px; } /* Спуск */
+    100% { top: 150px; } /* Возвращение на землю */
+}
+
+/* Класс, который запускает анимацию прыжка */
+.jump {
+    animation: jump 0.5s linear; /* Анимация длится 0.5 секунды с равномерной скоростью */
+}
+
