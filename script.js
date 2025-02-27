@@ -8,7 +8,8 @@ document.addEventListener("keydown", function () {
 });
 
 // Добавляем слушатель событий на касание экрана
-document.addEventListener("touchstart", function () {
+document.addEventListener("touchstart", function (event) {
+    event.preventDefault(); // Отключаем стандартное поведение касания (например, скролл)
     jump(); // При касании экрана вызываем функцию jump()
 });
 
@@ -33,8 +34,32 @@ let isAlive = setInterval(function () {
     // Получаем текущее положение кактуса (его левую координату)
     let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
 
+    // Параметры хитбокса кактуса
+    const hitboxWidth = 25; // Ширина хитбокса кактуса 
+    const hitboxOffset = 0; // Смещение хитбокса кактуса относительно левого края (без смещения)
+
+    // Параметры хитбокса динозавра
+    const dinoHitboxWidth = 30; // Ширина хитбокса динозавра (уменьшена)
+    const dinoHitboxOffset = 10; // Смещение хитбокса динозавра относительно левого края
+
+    // Рассчитываем положение хитбокса кактуса
+    const hitboxLeft = cactusLeft + hitboxOffset; // Левый край хитбокса кактуса
+    const hitboxRight = hitboxLeft + hitboxWidth; // Правый край хитбокса кактуса
+
+    // Рассчитываем положение хитбокса динозавра
+    const dinoHitboxLeft = 50 + dinoHitboxOffset; // Левый край хитбокса динозавра
+    const dinoHitboxRight = dinoHitboxLeft + dinoHitboxWidth; // Правый край хитбокса динозавра
+
+    // Отладка: выводим положение хитбоксов
+    console.log("Cactus Left:", cactusLeft, "Hitbox Left:", hitboxLeft, "Hitbox Right:", hitboxRight);
+    console.log("Dino Hitbox Left:", dinoHitboxLeft, "Dino Hitbox Right:", dinoHitboxRight, "Dino Top:", dinoTop);
+
     // Проверяем, столкнулись ли динозавр и кактус
-    if (cactusLeft < 50 && cactusLeft > 0 && dinoTop >= 130) { 
+    if (
+        hitboxLeft < dinoHitboxRight && // Хитбокс кактуса находится в зоне хитбокса динозавра (левая граница)
+        hitboxRight > dinoHitboxLeft && // Хитбокс кактуса не вышел за пределы хитбокса динозавра (правая граница)
+        dinoTop >= 130 // Динозавр находится на земле
+    ) {
         // Если кактус находится перед динозавром и динозавр на земле, игрок проигрывает
         alert("GAME OVER"); // Показываем сообщение о проигрыше
         location.reload(); // Перезагружаем страницу, чтобы начать заново

@@ -1,4 +1,3 @@
-
 body {
     background-color: #89c2d8; /* Голубое небо */
     display: flex;
@@ -6,13 +5,16 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden; /* Убираем скролл */
+    touch-action: none; /* Отключаем стандартные действия касания (например, скролл) */
 }
 
 .game {
-    width: 600px;
+    width: 100%; /* Ширина игры на всю ширину экрана */
+    max-width: 600px; /* Максимальная ширина для больших экранов */
     height: 200px;
     border-bottom: 3px solid #000102; /* Земля */
-    background-image: url('img/background.png'); 
+    background-image: url('img/background.png');
     background-size: cover;
     background-position: bottom;
     position: relative;
@@ -22,28 +24,40 @@ body {
 #dino {
     width: 50px;
     height: 50px;
-    background-image: url(img/dino.png) ;
+    background-image: url('img/dino.png');
     background-size: 50px 50px;
     position: relative;
     top: 150px;
+    left: 50px; /* Позиция динозавра по горизонтали */
 }
+
 #cactus {
-    width: 20px;  /* Ширина кактуса */
-    height: 40px; /* Высота кактуса */
-    background-image: url(img/cactus.png); /* Устанавливаем картинку кактуса */
+    width: 20px;  /* Ширина кактуса (оставляем оригинальную) */
+    height: 40px; /* Высота кактуса (оставляем оригинальную) */
+    background-image: url('img/cactus.png'); /* Устанавливаем картинку кактуса */
     background-size: 20px 40px; /* Размер фонового изображения совпадает с размером элемента */
-    position: relative; /* Относительное позиционирование */
-    top: 110px; /* Размещаем кактус на "земле" */
-    left: 580px; /* Исходная позиция кактуса (за границей игрового поля) */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 160px; /* Размещаем кактус на "земле" */
+    left: 100%; /* Исходная позиция кактуса (за границей игрового поля) */
     
     /* Запускаем анимацию "cactusMov" */
-    animation: cactusMov 2s infinite linear; 
+    animation: cactusMov 2s infinite linear;
+}
+
+/* Внутренний элемент для хитбокса */
+#cactus .hitbox {
+    width: 3px; /* Уменьшаем ширину хитбокса до 3px */
+    height: 40px; /* Высота хитбокса (такая же, как у кактуса) */
+    position: absolute;
+    left: 0; /* Смещаем хитбокс влево, чтобы он был по центру кактуса */
+    top: 0;
+    /* background-color: rgba(255, 0, 0, 0.3); /* Для отладки (можно включить, чтобы видеть хитбокс) */
 }
 
 /* Анимация движения кактуса слева направо */
 @keyframes cactusMov {
     0% { 
-        left: 580px; /* Начальная позиция кактуса (за границей экрана справа) */
+        left: 100%; /* Начальная позиция кактуса (за границей экрана справа) */
     }
     100% { 
         left: -20px; /* Конечная позиция (уходит за границу экрана слева) */
@@ -63,4 +77,3 @@ body {
 .jump {
     animation: jump 0.5s linear; /* Анимация длится 0.5 секунды с равномерной скоростью */
 }
-
