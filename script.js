@@ -7,15 +7,20 @@ document.addEventListener("keydown", function () {
     jump(); // При нажатии на клавишу вызываем функцию jump()
 });
 
+// Добавляем слушатель событий на касание экрана
+document.addEventListener("touchstart", function () {
+    jump(); // При касании экрана вызываем функцию jump()
+});
+
 // Функция для прыжка динозавра
 function jump() {
     // Проверяем, не выполняется ли уже анимация прыжка
     if (!dino.classList.contains("jump")) {
         dino.classList.add("jump"); // Добавляем класс, который запускает анимацию
 
-        // Удаляем класс "jump" после 500 миллисекунд (длительность прыжка)
+        // Удаляем класс "jump" после завершения анимации
         setTimeout(() => {
-            dino.classList.remove("jump"); // Динозавр возвращается на землю
+            dino.classList.remove("jump");
         }, 500);
     }
 }
