@@ -3,16 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Dino</title>
+    <title>Dino Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game">
+    <!-- Начальное окно с кнопкой "Начать игру" -->
+    <div id="startScreen">
+        <h1>DINO GAME</h1>
+        <button id="startButton">Начать игру</button>
+    </div>
+
+    <!-- Кнопка для управления музыкой и регулятор громкости -->
+    <div id="musicControls" class="hidden">
+        <button id="musicButton">Выключить музыку</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+    </div>
+
+    <!-- Счёт во время игры -->
+    <div id="scoreDisplay" class="hidden">Счёт: <span id="scoreValue">0</span></div>
+
+    <!-- Сообщение "GAME OVER" -->
+    <div id="gameOverMessage" class="hidden">
+        <h1>GAME OVER</h1>
+        <p>Счёт: <span id="finalScoreValue">0</span></p>
+        <button id="restartButton">Начать заново</button>
+    </div>
+
+    <!-- Игровое поле -->
+    <div class="game hidden">
         <div id="dino"></div>
         <div id="cactus">
             <div class="hitbox"></div> <!-- Внутренний элемент для хитбокса -->
         </div>
     </div>
+
+    <!-- Элемент для фоновой музыки -->
+    <audio id="backgroundMusic" loop>
+        <source src="Music/Песня-Динозаврик.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает элемент audio.
+    </audio>
 
     <script src="script.js"></script>
 </body>

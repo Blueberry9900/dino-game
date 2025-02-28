@@ -1,67 +1,126 @@
-// Получаем элементы динозавра и кактуса из HTML
+// Получаем элементы динозавра и кактуса
 const dino = document.getElementById("dino");
 const cactus = document.getElementById("cactus");
 
-// Добавляем слушатель событий на нажатие клавиши
-document.addEventListener("keydown", function () {
-    jump(); // При нажатии на клавишу вызываем функцию jump()
-});
+// Получаем элементы управления музыкой
+const backgroundMusic = document.getElementById("backgroundMusic");
+const musicButton = document.getElementById("musicButton");
+const volumeSlider = document.getElementById("volumeSlider");
 
-// Добавляем слушатель событий на касание экрана
-document.addEventListener("touchstart", function (event) {
-    event.preventDefault(); // Отключаем стандартное поведение касания (например, скролл)
-    jump(); // При касании экрана вызываем функцию jump()
-});
+// Получаем элементы начального экрана и экрана "GAME OVER"
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
+const gameOverMessage = document.getElementById("gameOverMessage");
+const restartButton = document.getElementById("restartButton");
+const scoreDisplay = document.getElementById("scoreDisplay");
+const scoreValue = document.getElementById("scoreValue");
+const finalScoreValue = document.getElementById("finalScoreValue");
 
-// Функция для прыжка динозавра
+// Переменные для состояния игры
+let isGameOver = false;
+let score = 0;
+let cactusPassed = false; // Флаг для отслеживания перепрыгнутого кактуса
+
+// Функция запуска игры
+function startGame() {
+    startScreen.classList.add("hidden");
+    document.querySelector(".game").classList.remove("hidden");
+    musicButton.classList.remove("hidden");
+    scoreDisplay.classList.remove("hidden");
+
+    backgroundMusic.play();
+    musicButton.textContent = "Выключить музыку";
+
+    isGameOver = false;
+    score = 0;
+    scoreValue.textContent = score;
+    cactusPassed = false;
+
+    cactus.style.left = "100%";
+}
+
+// Функция прыжка динозавра
 function jump() {
-    // Проверяем, не выполняется ли уже анимация прыжка
-    if (!dino.classList.contains("jump")) {
-        dino.classList.add("jump"); // Добавляем класс, который запускает анимацию
+    if (!isGameOver && !dino.classList.contains("jump")) {
+        dino.classList.add("jump");
 
-        // Удаляем класс "jump" после завершения анимации
         setTimeout(() => {
             dino.classList.remove("jump");
         }, 500);
     }
 }
 
-// Устанавливаем интервал для постоянной проверки столкновения
-let isAlive = setInterval(function () {
-    // Получаем текущее положение динозавра (его верхнюю координату)
-    let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+// Обработчики кнопок
+startButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", () => {
+    gameOverMessage.style.display = "none";
+    startGame();
+});
 
-    // Получаем текущее положение кактуса (его левую координату)
-    let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
-
-    // Параметры хитбокса кактуса
-    const hitboxWidth = 25; // Ширина хитбокса кактуса 
-    const hitboxOffset = 0; // Смещение хитбокса кактуса относительно левого края (без смещения)
-
-    // Параметры хитбокса динозавра
-    const dinoHitboxWidth = 30; // Ширина хитбокса динозавра (уменьшена)
-    const dinoHitboxOffset = 10; // Смещение хитбокса динозавра относительно левого края
-
-    // Рассчитываем положение хитбокса кактуса
-    const hitboxLeft = cactusLeft + hitboxOffset; // Левый край хитбокса кактуса
-    const hitboxRight = hitboxLeft + hitboxWidth; // Правый край хитбокса кактуса
-
-    // Рассчитываем положение хитбокса динозавра
-    const dinoHitboxLeft = 50 + dinoHitboxOffset; // Левый край хитбокса динозавра
-    const dinoHitboxRight = dinoHitboxLeft + dinoHitboxWidth; // Правый край хитбокса динозавра
-
-    // Отладка: выводим положение хитбоксов
-    console.log("Cactus Left:", cactusLeft, "Hitbox Left:", hitboxLeft, "Hitbox Right:", hitboxRight);
-    console.log("Dino Hitbox Left:", dinoHitboxLeft, "Dino Hitbox Right:", dinoHitboxRight, "Dino Top:", dinoTop);
-
-    // Проверяем, столкнулись ли динозавр и кактус
-    if (
-        hitboxLeft < dinoHitboxRight && // Хитбокс кактуса находится в зоне хитбокса динозавра (левая граница)
-        hitboxRight > dinoHitboxLeft && // Хитбокс кактуса не вышел за пределы хитбокса динозавра (правая граница)
-        dinoTop >= 130 // Динозавр находится на земле
-    ) {
-        // Если кактус находится перед динозавром и динозавр на земле, игрок проигрывает
-        alert("GAME OVER"); // Показываем сообщение о проигрыше
-        location.reload(); // Перезагружаем страницу, чтобы начать заново
+// Обработчик управления музыкой
+musicButton.addEventListener("click", () => {
+    if (backgroundMusic.paused) {
+        backgroundMusic.play();
+        musicButton.textContent = "Выключить музыку";
+    } else {
+        backgroundMusic.pause();
+        musicButton.textContent = "Включить музыку";
     }
-}, 10); // Проверяем состояние каждые 10 миллисекунд
+});
+
+// Обработчик громкости
+volumeSlider.addEventListener("input", () => {
+    backgroundMusic.volume = volumeSlider.value;
+});
+
+// Обработчики прыжка
+document.addEventListener("keydown", () => {
+    if (!isGameOver) jump();
+});
+document.addEventListener("touchstart", (event) => {
+    if (!isGameOver) {
+        event.preventDefault();
+        jump();
+    }
+});
+
+// Основная логика проверки столкновений и подсчета очков
+let isAlive = setInterval(() => {
+    if (isGameOver) return;
+
+    const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+    const cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
+
+    const hitboxWidth = 25;
+    const hitboxOffset = 0;
+    const dinoHitboxWidth = 30;
+    const dinoHitboxOffset = 10;
+
+    const hitboxLeft = cactusLeft + hitboxOffset;
+    const hitboxRight = hitboxLeft + hitboxWidth;
+    const dinoHitboxLeft = 50 + dinoHitboxOffset;
+    const dinoHitboxRight = dinoHitboxLeft + dinoHitboxWidth;
+
+    // Проверяем, перепрыгнул ли динозавр кактус
+    if (cactusLeft + hitboxWidth < dinoHitboxLeft && !cactusPassed) {
+        score++;
+        scoreValue.textContent = score;
+        cactusPassed = true; // Кактус перепрыгнут
+    }
+
+    // Сбрасываем флаг, если кактус прошел динозавра
+    if (cactusLeft > dinoHitboxRight) {
+        cactusPassed = false;
+    }
+
+    // Проверка столкновения
+    if (
+        hitboxLeft < dinoHitboxRight &&
+        hitboxRight > dinoHitboxLeft &&
+        dinoTop >= 130
+    ) {
+        isGameOver = true;
+        gameOverMessage.style.display = "block";
+        finalScoreValue.textContent = score; // Итоговый счет
+    }
+}, 10);

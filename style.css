@@ -9,6 +9,73 @@ body {
     touch-action: none; /* Отключаем стандартные действия касания (например, скролл) */
 }
 
+/* Начальное окно */
+#startScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(220, 255, 211, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+#startScreen h1 {
+    font-size: 40px;
+    margin: 0 0 20px;
+    color: rgb(0, 0, 0);
+}
+
+#startButton {
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+#startButton:hover {
+    background-color: #0056b3;
+}
+
+/* Управление музыкой */
+#musicControls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+#musicButton {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+#volumeSlider {
+    width: 100px;
+}
+
+/* Счёт во время игры */
+#scoreDisplay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #000;
+    z-index: 1000;
+}
+
+/* Игровое поле */
 .game {
     width: 100%; /* Ширина игры на всю ширину экрана */
     max-width: 600px; /* Максимальная ширина для больших экранов */
@@ -76,4 +143,43 @@ body {
 /* Класс, который запускает анимацию прыжка */
 .jump {
     animation: jump 0.5s linear; /* Анимация длится 0.5 секунды с равномерной скоростью */
+}
+
+/* Стили для сообщения "GAME OVER" */
+#gameOverMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none; /* По умолчанию скрыто */
+}
+
+#gameOverMessage h1 {
+    font-size: 40px;
+    margin: 0 0 20px;
+}
+
+#restartButton {
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+#restartButton:hover {
+    background-color: #0056b3;
+}
+
+/* Класс для скрытия элементов */
+.hidden {
+    display: none;
 }
