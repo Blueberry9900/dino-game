@@ -1,0 +1,185 @@
+body {
+    background-color: #89c2d8; /* Голубое небо */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Убираем скролл */
+    touch-action: none; /* Отключаем стандартные действия касания (например, скролл) */
+}
+
+/* Начальное окно */
+#startScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(220, 255, 211, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+#startScreen h1 {
+    font-size: 40px;
+    margin: 0 0 20px;
+    color: rgb(0, 0, 0);
+}
+
+#startButton {
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+#startButton:hover {
+    background-color: #0056b3;
+}
+
+/* Управление музыкой */
+#musicControls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+#musicButton {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+#volumeSlider {
+    width: 100px;
+}
+
+/* Счёт во время игры */
+#scoreDisplay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #000;
+    z-index: 1000;
+}
+
+/* Игровое поле */
+.game {
+    width: 100%; /* Ширина игры на всю ширину экрана */
+    max-width: 600px; /* Максимальная ширина для больших экранов */
+    height: 200px;
+    border-bottom: 3px solid #000102; /* Земля */
+    background-image: url('img/background.png');
+    background-size: cover;
+    background-position: bottom;
+    position: relative;
+    overflow: hidden;
+}
+
+#dino {
+    width: 50px;
+    height: 50px;
+    background-image: url('img/dino.png');
+    background-size: 50px 50px;
+    position: relative;
+    top: 150px;
+    left: 50px; /* Позиция динозавра по горизонтали */
+}
+
+#cactus {
+    width: 20px;  /* Ширина кактуса (оставляем оригинальную) */
+    height: 40px; /* Высота кактуса (оставляем оригинальную) */
+    background-image: url('img/cactus.png'); /* Устанавливаем картинку кактуса */
+    background-size: 20px 40px; /* Размер фонового изображения совпадает с размером элемента */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 160px; /* Размещаем кактус на "земле" */
+    left: 100%; /* Исходная позиция кактуса (за границей игрового поля) */
+    
+    /* Запускаем анимацию "cactusMov" */
+    animation: cactusMov 2s infinite linear;
+}
+
+/* Внутренний элемент для хитбокса */
+#cactus .hitbox {
+    width: 3px; /* Уменьшаем ширину хитбокса до 3px */
+    height: 40px; /* Высота хитбокса (такая же, как у кактуса) */
+    position: absolute;
+    left: 0; /* Смещаем хитбокс влево, чтобы он был по центру кактуса */
+    top: 0;
+    /* background-color: rgba(255, 0, 0, 0.3); /* Для отладки (можно включить, чтобы видеть хитбокс) */
+}
+
+/* Анимация движения кактуса слева направо */
+@keyframes cactusMov {
+    0% { 
+        left: 100%; /* Начальная позиция кактуса (за границей экрана справа) */
+    }
+    100% { 
+        left: -20px; /* Конечная позиция (уходит за границу экрана слева) */
+    }
+}
+
+/* Анимация прыжка динозавра */
+@keyframes jump {
+    0% { top: 150px; }  /* Начальная позиция (динозавр стоит на земле) */
+    30% { top: 100px; } /* Начало подъёма */
+    50% { top: 60px; }  /* Максимальная высота прыжка */
+    80% { top: 100px; } /* Спуск */
+    100% { top: 150px; } /* Возвращение на землю */
+}
+
+/* Класс, который запускает анимацию прыжка */
+.jump {
+    animation: jump 0.5s linear; /* Анимация длится 0.5 секунды с равномерной скоростью */
+}
+
+/* Стили для сообщения "GAME OVER" */
+#gameOverMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none; /* По умолчанию скрыто */
+}
+
+#gameOverMessage h1 {
+    font-size: 40px;
+    margin: 0 0 20px;
+}
+
+#restartButton {
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+#restartButton:hover {
+    background-color: #0056b3;
+}
+
+/* Класс для скрытия элементов */
+.hidden {
+    display: none;
+}
